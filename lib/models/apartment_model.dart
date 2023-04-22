@@ -2,6 +2,8 @@
 //
 //     final apartmentModel = apartmentModelFromJson(jsonString);
 
+import 'dart:convert';
+
 class ApartmentModel {
   ApartmentModel({
     required this.response,
@@ -84,92 +86,93 @@ class Items {
 
 class Item {
   Item({
-    required this.empty,
-    required this.item,
-    required this.purple,
-    required this.fluffy,
-    required this.tentacled,
-    required this.sticky,
-    required this.indigo,
-    required this.indecent,
-    required this.hilarious,
-    required this.ambitious,
-    required this.cunning,
-    required this.magenta,
-    required this.frisky,
-    required this.mischievous,
-    required this.braggadocious,
-    required this.the1,
-    required this.the2,
+    required this.isHouseContractRenewed,
+    required this.builtYear,
+    required this.contractType,
+    required this.contractTerm,
+    required this.year,
+    required this.dong,
+    required this.depositAmount,
+    required this.nameOfApartment,
+    required this.month,
+    required this.monthlyRentFee,
+    required this.day,
+    required this.ownArea,
+    required this.depositOfRenew,
+    required this.monthlyRentFeeOfRenew,
+    required this.numberOfLandLot,
+    required this.regionalCode,
+    required this.floor,
   });
 
-  final Empty empty;
-  final int item;
-  final Enum purple;
-  final String fluffy;
-  final int tentacled;
-  final String sticky;
-  final dynamic indigo;
-  final String indecent;
-  final int hilarious;
-  final int ambitious;
-  final int cunning;
-  final double magenta;
-  final String frisky;
-  final dynamic mischievous;
-  final dynamic braggadocious;
-  final int the1;
-  final int the2;
+  final Renewed isHouseContractRenewed;
+  final int builtYear;
+  final Enum contractType;
+  final String contractTerm;
+  final int year;
+  final String dong;
+  final dynamic depositAmount;
+  final String nameOfApartment;
+  final int month;
+  final int monthlyRentFee;
+  final int day;
+  final double ownArea;
+  final String depositOfRenew;
+  final dynamic monthlyRentFeeOfRenew;
+  final String numberOfLandLot;
+  final int regionalCode;
+  final int floor;
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
-        empty: emptyValues.map[json["갱신요구권사용"]]!,
-        item: json["건축년도"],
-        purple: enumValues.map[json["계약구분"]]!,
-        fluffy: json["계약기간"],
-        tentacled: json["년"],
-        sticky: json["법정동"],
-        indigo: json["보증금액"],
-        indecent: json["아파트"],
-        hilarious: json["월"],
-        ambitious: json["월세금액"],
-        cunning: json["일"],
-        magenta: json["전용면적"]?.toDouble(),
-        frisky: json["종전계약보증금"],
-        mischievous: json["종전계약월세"],
-        braggadocious: json["지번"],
-        the1: json["지역코드"],
-        the2: json["층"],
+        isHouseContractRenewed:
+            emptyValues.map[json["갱신요구권사용"]] ?? Renewed.none,
+        builtYear: json["건축년도"] ?? -1,
+        contractType: enumValues.map[json["계약구분"]] ?? Enum.EMPTY,
+        contractTerm: json["계약기간"] ?? 'null',
+        year: json["년"] ?? -1,
+        dong: json["법정동"] ?? 'null',
+        depositAmount: json["보증금액"] ?? 'null',
+        nameOfApartment: json["아파트"] ?? 'null',
+        month: json["월"] ?? -1,
+        monthlyRentFee: json["월세금액"] ?? -1,
+        day: json["일"] ?? -1,
+        ownArea: json["전용면적"]?.toDouble() ?? -1,
+        depositOfRenew: json["종전계약보증금"] ?? 'null',
+        monthlyRentFeeOfRenew: json["종전계약월세"] ?? -1,
+        numberOfLandLot: json["지번"] ?? -1,
+        regionalCode: json["지역코드"] ?? -1,
+        floor: json["층"] ?? -1,
       );
 
   Map<String, dynamic> toJson() => {
-        "갱신요구권사용": emptyValues.reverse[empty],
-        "건축년도": item,
-        "계약구분": enumValues.reverse[purple],
-        "계약기간": fluffy,
-        "년": tentacled,
-        "법정동": sticky,
-        "보증금액": indigo,
-        "아파트": indecent,
-        "월": hilarious,
-        "월세금액": ambitious,
-        "일": cunning,
-        "전용면적": magenta,
-        "종전계약보증금": frisky,
-        "종전계약월세": mischievous,
-        "지번": braggadocious,
-        "지역코드": the1,
-        "층": the2,
+        "갱신요구권사용": emptyValues.reverse[isHouseContractRenewed],
+        "건축년도": builtYear,
+        "계약구분": enumValues.reverse[contractType],
+        "계약기간": contractTerm,
+        "년": year,
+        "법정동": dong,
+        "보증금액": depositAmount,
+        "아파트": nameOfApartment,
+        "월": month,
+        "월세금액": monthlyRentFee,
+        "일": day,
+        "전용면적": ownArea,
+        "종전계약보증금": depositOfRenew,
+        "종전계약월세": monthlyRentFeeOfRenew,
+        "지번": numberOfLandLot,
+        "지역코드": regionalCode,
+        "층": floor,
       };
 }
 
-enum Empty { empty, purple }
+enum Renewed { none, renewed }
 
-final emptyValues = EnumValues({" ": Empty.empty, "사용": Empty.purple});
+final emptyValues = EnumValues({" ": Renewed.none, "사용": Renewed.renewed});
 
-enum Enum { empty, purple, fluffy }
+enum Enum { EMPTY, PURPLE, FLUFFY }
 
 final enumValues =
-    EnumValues({" ": Enum.empty, "갱신": Enum.fluffy, "신규": Enum.purple});
+    EnumValues({" ": Enum.EMPTY, "갱신": Enum.FLUFFY, "신규": Enum.PURPLE});
 
 class Header {
   Header({

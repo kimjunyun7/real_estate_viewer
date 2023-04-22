@@ -32,7 +32,7 @@ migrate_working_dir/
 .pub/
 /build/
 
-lib/memo
+lib/do_not_share.dart
 
 # Symbolication related
 app.*.symbols
