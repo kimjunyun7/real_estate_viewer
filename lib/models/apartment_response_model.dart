@@ -2,16 +2,17 @@
 //
 //     final apartmentModel = apartmentModelFromJson(jsonString);
 
-import 'dart:convert';
+import 'package:flutter/material.dart';
 
-class ApartmentModel {
-  ApartmentModel({
+class ApartmentResponseModel {
+  ApartmentResponseModel({
     required this.response,
   });
 
   final Response response;
 
-  factory ApartmentModel.fromJson(Map<String, dynamic> json) => ApartmentModel(
+  factory ApartmentResponseModel.fromJson(Map<String, dynamic> json) =>
+      ApartmentResponseModel(
         response: Response.fromJson(json["response"]),
       );
 
@@ -48,13 +49,13 @@ class Body {
     required this.totalCount,
   });
 
-  final Items items;
+  final ApartmentList items;
   final int numOfRows;
   final int pageNo;
   final int totalCount;
 
   factory Body.fromJson(Map<String, dynamic> json) => Body(
-        items: Items.fromJson(json["items"]),
+        items: ApartmentList.fromJson(json["items"]),
         numOfRows: json["numOfRows"],
         pageNo: json["pageNo"],
         totalCount: json["totalCount"],
@@ -68,15 +69,16 @@ class Body {
       };
 }
 
-class Items {
-  Items({
+class ApartmentList {
+  ApartmentList({
     required this.item,
   });
 
-  final List<Item> item;
+  final List<Apartment> item;
 
-  factory Items.fromJson(Map<String, dynamic> json) => Items(
-        item: List<Item>.from(json["item"].map((x) => Item.fromJson(x))),
+  factory ApartmentList.fromJson(Map<String, dynamic> json) => ApartmentList(
+        item: List<Apartment>.from(
+            json["item"].map((x) => Apartment.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -84,8 +86,8 @@ class Items {
       };
 }
 
-class Item {
-  Item({
+class Apartment {
+  Apartment({
     required this.isHouseContractRenewed,
     required this.builtYear,
     required this.contractType,
@@ -103,11 +105,12 @@ class Item {
     required this.numberOfLandLot,
     required this.regionalCode,
     required this.floor,
-  });
+  }) : id = UniqueKey().toString();
 
-  final Renewed isHouseContractRenewed;
+  final String id;
+  final String isHouseContractRenewed;
   final int builtYear;
-  final Enum contractType;
+  final String contractType;
   final String contractTerm;
   final int year;
   final String dong;
@@ -123,31 +126,30 @@ class Item {
   final int regionalCode;
   final int floor;
 
-  factory Item.fromJson(Map<String, dynamic> json) => Item(
-        isHouseContractRenewed:
-            emptyValues.map[json["갱신요구권사용"]] ?? Renewed.none,
+  factory Apartment.fromJson(Map<String, dynamic> json) => Apartment(
+        isHouseContractRenewed: checkNull(json["갱신요구권사용"].toString()),
         builtYear: json["건축년도"] ?? -1,
-        contractType: enumValues.map[json["계약구분"]] ?? Enum.EMPTY,
-        contractTerm: json["계약기간"] ?? 'null',
+        contractType: checkNull(json["계약구분"].toString()),
+        contractTerm: checkNull(json["계약기간"].toString()),
         year: json["년"] ?? -1,
-        dong: json["법정동"] ?? 'null',
-        depositAmount: json["보증금액"] ?? 'null',
-        nameOfApartment: json["아파트"] ?? 'null',
+        dong: checkNull(json["법정동"].toString()),
+        depositAmount: checkNull(json["보증금액"].toString()),
+        nameOfApartment: checkNull(json["아파트"].toString()),
         month: json["월"] ?? -1,
         monthlyRentFee: json["월세금액"] ?? -1,
         day: json["일"] ?? -1,
         ownArea: json["전용면적"]?.toDouble() ?? -1,
-        depositOfRenew: json["종전계약보증금"] ?? 'null',
+        depositOfRenew: checkNull(json["종전계약보증금"].toString()),
         monthlyRentFeeOfRenew: json["종전계약월세"] ?? -1,
-        numberOfLandLot: json["지번"] ?? -1,
+        numberOfLandLot: checkNull(json["지번"].toString()),
         regionalCode: json["지역코드"] ?? -1,
         floor: json["층"] ?? -1,
       );
 
   Map<String, dynamic> toJson() => {
-        "갱신요구권사용": emptyValues.reverse[isHouseContractRenewed],
+        "갱신요구권사용": isHouseContractRenewed,
         "건축년도": builtYear,
-        "계약구분": enumValues.reverse[contractType],
+        "계약구분": contractType,
         "계약기간": contractTerm,
         "년": year,
         "법정동": dong,
@@ -163,16 +165,20 @@ class Item {
         "지역코드": regionalCode,
         "층": floor,
       };
+
+  static String checkNull(String str) {
+    return str == ' ' ? 'null' : str;
+  }
 }
 
-enum Renewed { none, renewed }
+// enum Renewed { none, renewed }
 
-final emptyValues = EnumValues({" ": Renewed.none, "사용": Renewed.renewed});
+// final emptyValues = EnumValues({" ": Renewed.none, "사용": Renewed.renewed});
 
-enum Enum { EMPTY, PURPLE, FLUFFY }
+// enum Enum { empty, purple, fluffy }
 
-final enumValues =
-    EnumValues({" ": Enum.EMPTY, "갱신": Enum.FLUFFY, "신규": Enum.PURPLE});
+// final enumValues =
+//     EnumValues({" ": Enum.empty, "갱신": Enum.fluffy, "신규": Enum.purple});
 
 class Header {
   Header({
@@ -184,8 +190,8 @@ class Header {
   final String resultMsg;
 
   factory Header.fromJson(Map<String, dynamic> json) => Header(
-        resultCode: json["resultCode"],
-        resultMsg: json["resultMsg"],
+        resultCode: json["resultCode"].toString(),
+        resultMsg: json["resultMsg"].toString(),
       );
 
   Map<String, dynamic> toJson() => {

@@ -12,7 +12,7 @@ class ApiConstants {
   ///string 타입, 검색하고자 하는 코드 패턴을 입력합니다.
   ///
   ///예를 들어 모든 특별/광역시(도)를 조회하려면 ```*00000000(10개)``` 파라메터를 입력합니다.
-  static const String regionPattern = '/regcode_pattern';
+  static const String regionPattern = 'regcode_pattern=';
 
   ///boolean 타입, regcode_pattern 파라메터만 사용할 경우 발생하는 문제점을 해결하고자 추가된 파라메터입니다.
   ///
@@ -20,5 +20,5 @@ class ApiConstants {
   //
   ///
   ///종로구 그 자체가 아닌 종로구 소속만 조회하고 싶을 경우엔 is_ignore_zero 파라메터값을 ```true``` 로 설정하여 API를 호출합니다.
-  static const String regionIsDetailOnly = '/is_ignore_zero';
+  static const String regionIsDetailOnly = 'is_ignore_zero=';
 }
